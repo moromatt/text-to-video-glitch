@@ -1,18 +1,18 @@
 # text_to_video_glitch
 Generate from txt file, a video where chunks of randomic size of the txt are displayed for N frames. K of N frames will be created with "glitched" characters. 
 
-# load text file
+###  load text file
 text_path = './text_file/text.txt'
-# output video name
+###  output video name
 video_name = 'text_to_chaos_video.mp4'
-# set text config
+###  set text config
 word_range = 5
 text_size = 140
-# set text color
+###  set text color
 text_color = (0, 0, 255)
-# background color
+###  background color
 background_color = (200, 200, 200)
-# set image size
+###  set image size
 image_size = [592, 1920]
 
 # example
