@@ -18,7 +18,7 @@ text_color = (0, 0, 255)
 # background color
 background_color = (200, 200, 200)
 # set image size
-image_size = [592, 1920]
+h_img, w_img = [592, 1920]
 
 
 # set font type and size
@@ -32,13 +32,6 @@ fps = float(n_frames_per_chunk + n_frames_per_correct_chunk)
 
 # get text and sanitize
 text = get_text(text_path)
-
-# create background image
-img = np.zeros(image_size + [3], dtype=np.uint8)
-img.fill(0)
-
-# get image shappe
-h_img, w_img, _ = img.shape
 
 # split in random chunks
 text_list = create_chunks(text, word_range)
