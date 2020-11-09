@@ -14,12 +14,13 @@ video_name = 'text_to_chaos_video.mp4'
 word_range = 5
 text_size = 140
 # set text color
-text_color = (0, 0, 255)
+text_color = (588, 255, 255)
 # background color
-background_color = (200, 200, 200)
+background_color = (0, 0, 0)
 # set image size
 h_img, w_img = [592, 1920]
-
+# set the percentage of how many letters should vary
+f_percent = 0.3
 
 # set font type and size
 unicode_font = ImageFont.truetype("simsun.ttc", text_size, encoding='unic')
@@ -39,12 +40,17 @@ text_list = create_chunks(text, word_range)
 list_of_images = list()
 for idx, chunk in enumerate(text_list):
     # get N random chunks
+    chaos_chunk_order = list()
     chaos_chunk = list()
     for _ in range(n_frames_per_chunk_chaos):
-        chaos_chunk.append(make_chaos(chunk))
+        chaos_chunk_order.append(make_chaos(chunk, f_percent))
+    # double C randomic frames
+    for i in range(len(chaos_chunk_order)):
+        chaos_chunk.append(chaos_chunk_order[i])
+        if random.choice([True, False]):
+            chaos_chunk.extend([chaos_chunk_order[i]] * 2)
     # union of N random chunks with K times the original chunk
-    tot_chunks = chaos_chunk + [chunk] * (n_frames_per_chunk - n_frames_per_chunk_chaos)
-    tot_chunks = random.sample(tot_chunks, len(tot_chunks)) + [chunk] * n_frames_per_correct_chunk
+    tot_chunks = chaos_chunk + [chunk] * n_frames_per_correct_chunk
 
     for word in tot_chunks:
         img_pil = Image.new("RGBA", (w_img, h_img), color=background_color)
