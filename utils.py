@@ -57,7 +57,8 @@ def make_chaos(text_chunk, f_percent):
     # get len chunk
     len_chunk = len(text_chunk)
     if len_chunk < 4:
-        f_percent = 0.6
+        f_percent = 1 + (len_chunk - 1) * (-0.13)
+
     # modify chunk
     if len_chunk is 0:
         len_chunk += 1
