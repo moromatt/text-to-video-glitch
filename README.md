@@ -6,7 +6,10 @@ Set: number of glitched frames, number of maximum words per chunk, number of sta
 Have fun!
 
 # Example:
-**text**: "_Ivan Pregelj nacque in una modesta famiglia di Santa Lucia, oggi Most na Soči in Slovenia da Mohor, sarto, e Marija Modrejc. Perse i genitori da piccolo, e il promettente ragazzino fu seguito dalla nonna paterna e dal parroco, Jožef Fabijan, che riuscì a mandarlo per un breve tempo al Seminario Maggiore di Gorizia._"  
+**text**: "_Ayy, I just decided by the grace of the god Poseidon
+That you're so dead to me I dug a hole for you to lie in
+I'm sick and disowning, all the moments, and the key components
+That led me to follow hollow promises from empty monads_"  
 **output video:**  
 <p align="center">
   <img src="output.gif" alt="animated" />
