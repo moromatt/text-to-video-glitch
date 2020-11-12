@@ -6,12 +6,9 @@ Set: number of glitched frames, number of maximum words per chunk, number of sta
 Have fun!
 
 # Example:
-**text**: "_Ayy, I just decided by the grace of the god Poseidon
-
-That you're so dead to me I dug a hole for you to lie in
-
-I'm sick and disowning, all the moments, and the key components
-
+**text**: "_Ayy, I just decided by the grace of the god Poseidon  
+That you're so dead to me I dug a hole for you to lie in  
+I'm sick and disowning, all the moments, and the key components  
 That led me to follow hollow promises from empty monads_"  
 **output video:**  
 <p align="center">
