@@ -62,6 +62,7 @@ def make_chaos(text_chunk, f_percent):
     if len_chunk is 0:
         len_chunk += 1
         text_chunk += " "
+        f_percent = 1.0
     n_chaos_letters = np.random.randint(0, math.ceil(len_chunk * f_percent))
     # random number of letters that we change
     pos_letters = [0] * (len_chunk - n_chaos_letters) + [1] * n_chaos_letters
