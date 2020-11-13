@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""text_video_glitch.py: Description of what foobar does."""
+"""text_video_glitch.py."""
 __author__ = "amxrfe"
 __copyright__ = "Copyright 2020, Planet Earth"
 

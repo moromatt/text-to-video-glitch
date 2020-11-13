@@ -37,17 +37,24 @@ def get_text(text_path):
     file = open(text_path, 'rU', encoding='utf8')
     text = file.readlines()
     text = ' '.join(text)
-    text = str(text).replace("\n", "")
-    text = text.replace("\\n", "")
+    # text = str(text).replace("\n", "")
+    # text = text.replace("\\n", "")
     return text
 
 
 def create_chunks(text, word_range):
-    text = text.split()
+    text = text.split(' ')
     idx_prev = idx = 0
     text_list = list()
     while idx_prev <= len(text):
+        # get a random step between 1 and set word_range
         idx = np.random.randint(1, word_range)
+        # if between the two indexes we found a \n, split and update idx
+        for pos, word in enumerate(text[idx_prev: idx + idx_prev]):
+            if word.find('\n') != -1:
+                idx = pos + 1
+                break
+
         text_list.append(' '.join(text[idx_prev: idx + idx_prev]))
         idx_prev += idx
     return text_list
