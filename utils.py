@@ -48,10 +48,10 @@ def create_chunks(text, word_range):
     text_list = list()
     while idx_prev <= len(text):
         # get a random step between 1 and set word_range
-        idx = np.random.randint(1, word_range)
+        idx = np.random.randint(*word_range)
         # if between the two indexes we found a \n, split and update idx
         for pos, word in enumerate(text[idx_prev: idx + idx_prev]):
-            if word.find('\n') != -1:
+            if word.find('\n') != -1 or word.find(',') != -1:
                 idx = pos + 1
                 break
 
@@ -70,7 +70,7 @@ def make_chaos(text_chunk, f_percent):
     if len_chunk is 0:
         len_chunk += 1
         text_chunk += " "
-        f_percent = 1.0
+
     n_chaos_letters = np.random.randint(0, math.ceil(len_chunk * f_percent))
     # random number of letters that we change
     pos_letters = [0] * (len_chunk - n_chaos_letters) + [1] * n_chaos_letters
@@ -85,7 +85,9 @@ def make_chaos(text_chunk, f_percent):
     return new_text_chunk
 
 
-
-
-
+def find_max_chunk(chunk_list, pad_img, unicode_font):
+    max_chunk = max(chunk_list, key=len)
+    draw = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    w, h = draw.textsize(max_chunk, font=unicode_font)
+    return w + pad_img[0], h + pad_img[1]
 

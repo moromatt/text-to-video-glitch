@@ -14,13 +14,13 @@ if __name__ == '__main__':
                         help='path/to/text.txt')
     parser.add_argument('--out_name', type=str, default='text_to_chaos_video.mp4',
                         help='video name output')
-    parser.add_argument('--word_range', type=int, default=5,
+    parser.add_argument('--min_word_range', type=int, default=10,
                         help='max number of words per chunk')
-    parser.add_argument('--w', type=int, default=1920,
+    parser.add_argument('--max_word_range', type=int, default=50,
                         help='max number of words per chunk')
-    parser.add_argument('--h', type=int, default=592,
-                        help='max number of words per chunk')
-    parser.add_argument('--f_percent', type=int, default=0.3,
+    parser.add_argument('--f_percent', type=float, default=0.3,
+                        help='set the percentage of how many letters should vary')
+    parser.add_argument('--text_size', type=int, default=140,
                         help='set the percentage of how many letters should vary')
 
     args = parser.parse_args()
@@ -30,16 +30,16 @@ if __name__ == '__main__':
     # output video name
     video_name = args.out_name
     # set text config
-    word_range = args.word_range
-    # set image size
-    h_img, w_img = [args.h, args.w]
+    word_range = sorted([args.min_word_range, args.max_word_range])
+    # set image pad size
+    pad_img = (50, 100)
     # set the percentage of how many letters should vary
     f_percent = args.f_percent
 
     # aesthetics configs
-    text_size = 140
+    text_size = args.text_size
     # set text color
-    text_color = (588, 255, 255)
+    text_color = (255, 255, 255)
     # background color
     background_color = (0, 0, 0)
     # set number of frames per chunk, add at the end C frames with the correct chunk
@@ -60,6 +60,9 @@ if __name__ == '__main__':
     # split in random chunks
     text_list = create_chunks(text, word_range)
 
+    # get larger chunk and calculate min necessary img dimension
+    image_size = find_max_chunk(text_list, pad_img, unicode_font)
+
     list_of_images = list()
     for idx, chunk in enumerate(text_list):
         # get N random chunks
@@ -76,10 +79,10 @@ if __name__ == '__main__':
         tot_chunks = chaos_chunk + [chunk] * n_frames_per_correct_chunk + [""] * n_empty_chunk
 
         for word in tot_chunks:
-            img_pil = Image.new("RGBA", (w_img, h_img), color=background_color)
+            img_pil = Image.new("RGBA", image_size, color=background_color)
             draw = ImageDraw.Draw(img_pil)
             w, h = draw.textsize(word, font=unicode_font)
-            draw.text(((w_img - w) / 2, (h_img - h) / 2), word, font=unicode_font, fill=text_color)
+            draw.text(((image_size[0] - w) / 2, (image_size[1] - h) / 2), word, font=unicode_font, fill=text_color)
             img = np.array(img_pil)
 
             # display results
