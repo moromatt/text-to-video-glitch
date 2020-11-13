@@ -5,7 +5,7 @@ Set: number of glitched frames, number of maximum words per chunk, number of sta
   
 Have fun!
   
-```python text_video_glitch.py --text_path ./text_file/text.txt --out_name text_to_chaos_video.mp4 --word_range 5 --w 1920 --h 592 --f_percent 0.3```
+```python text_video_glitch.py --text_path ./text_file/text.txt --out_name text_to_chaos_video.mp4 --min_word_range 5 --min_word_range 10 --text_size 140 --f_percent 0.3```
   
 # Example:
 **text**:  
