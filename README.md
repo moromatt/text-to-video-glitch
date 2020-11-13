@@ -4,7 +4,9 @@ K of N frames will be created with "glitched" characters.
 Set: number of glitched frames, number of maximum words per chunk, number of stable frames, background color, text color, image size, font.  
   
 Have fun!
-
+  
+```python text_video_glitch.py --text_path ./text_file/text.txt --out_name text_to_chaos_video.mp4 --word_range 5 --w 1920 --h 592 --f_percent 0.3```
+  
 # Example:
 **text**:  
 "_Ayy, I just decided by the grace of the god Poseidon  
