@@ -80,8 +80,8 @@ def make_chaos(text_chunk, f_percent):
     return new_text_chunk
 
 
-def find_max_chunk(chunk_list, pad_img, unicode_font):
-    max_chunk = max(chunk_list, key=len)
+def find_max_chunk(text_list, pad_img, unicode_font):
+    max_chunk = max(text_list, key=len)
     draw = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     w, h = draw.textsize(max_chunk, font=unicode_font)
     # add padding
@@ -96,6 +96,8 @@ def find_max_chunk(chunk_list, pad_img, unicode_font):
 def add_space_btw_chunks(text_list):
     ext_text_list = list()
     for word in text_list:
-        ext_text_list.append(np.random.randint(5, 20) * " ")
+        ext_text_list.append(np.random.randint(10,  len(max(text_list, key=len))) * " ")
         ext_text_list.append(word)
     return ext_text_list
+
+
