@@ -3,24 +3,25 @@
 __author__ = "amxrfe"
 __copyright__ = "Copyright 2020, Planet Earth"
 
-
+import imageio
 import argparse
+from PIL import ImageFont
 from utils import *
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='maskrcnn-training')
+    parser = argparse.ArgumentParser(description='text_video_glitch.py')
     parser.add_argument('--text_path', type=str, default='./text_file/text.txt',
                         help='path/to/text.txt')
     parser.add_argument('--out_name', type=str, default='text_to_chaos_video.mp4',
                         help='video name output')
     parser.add_argument('--min_word_range', type=int, default=10,
                         help='max number of words per chunk')
-    parser.add_argument('--max_word_range', type=int, default=50,
+    parser.add_argument('--max_word_range', type=int, default=20,
                         help='max number of words per chunk')
     parser.add_argument('--f_percent', type=float, default=0.3,
                         help='set the percentage of how many letters should vary')
-    parser.add_argument('--text_size', type=int, default=140,
+    parser.add_argument('--text_size', type=int, default=2,
                         help='set the percentage of how many letters should vary')
 
     args = parser.parse_args()
@@ -44,8 +45,8 @@ if __name__ == '__main__':
     background_color = (0, 0, 0)
     # set number of frames per chunk, add at the end C frames with the correct chunk
     n_frames_per_chunk = 20
-    n_frames_per_chunk_chaos = 15
-    n_frames_per_correct_chunk = 10
+    n_frames_per_chunk_chaos = 10  # must be < n_frames_per_chunk
+    n_frames_per_correct_chunk = 10  # add N extra correct frames
     n_empty_chunk = 5
 
     # set font type and size
@@ -60,11 +61,12 @@ if __name__ == '__main__':
     # split in random chunks
     text_list = create_chunks(text, word_range)
 
-    # get larger chunk and calculate min necessary img dimension
+    # get larger chunk to print and calculate necessary min img dimension
     image_size = find_max_chunk(text_list, pad_img, unicode_font)
 
     list_of_images = list()
     for idx, chunk in enumerate(text_list):
+        print(chunk)
         # get N random chunks
         chaos_chunk_order = list()
         chaos_chunk = list()
@@ -88,4 +90,4 @@ if __name__ == '__main__':
             # display results
             list_of_images.append(img)
 
-    imageio.mimwrite(path_imgs + '/' + video_name, np.array(list_of_images), fps=fps)
+    imageio.mimwrite(path_img + '/' + video_name, np.array(list_of_images), fps=fps)

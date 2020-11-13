@@ -1,18 +1,17 @@
-import numpy as np
+import math
 import random
 import string
 import pathlib
-import math
-import imageio
-from PIL import ImageFont, ImageDraw, Image
+import numpy as np
+from PIL import ImageDraw, Image
 
 
-path_imgs = "./video_out/"
-pathlib.Path(path_imgs).mkdir(parents=True, exist_ok=True)
+path_img = "./video_out/"
+pathlib.Path(path_img).mkdir(parents=True, exist_ok=True)
 
 
 def random_printable_unicode():
-    def random():
+    def random_chars():
         cyrillic_range = (int('0410', 16), int('0450', 16))  # from the Cyrillic alphabet
         jappo_range = (int('3040', 16), int('309F', 16))  # from the Cyrillic alphabet
         greek_range = (int('0370', 16), int('03FF', 16))  # from the Cyrillic alphabet
@@ -24,7 +23,7 @@ def random_printable_unicode():
         return out
 
     while True:
-        i = random()
+        i = random_chars()
         c = chr(i)
         if c.isprintable():
             return c
@@ -37,14 +36,12 @@ def get_text(text_path):
     file = open(text_path, 'rU', encoding='utf8')
     text = file.readlines()
     text = ' '.join(text)
-    # text = str(text).replace("\n", "")
-    # text = text.replace("\\n", "")
     return text
 
 
 def create_chunks(text, word_range):
     text = text.split(' ')
-    idx_prev = idx = 0
+    idx_prev = 0
     text_list = list()
     while idx_prev <= len(text):
         # get a random step between 1 and set word_range
@@ -54,7 +51,6 @@ def create_chunks(text, word_range):
             if word.find('\n') != -1 or word.find(',') != -1:
                 idx = pos + 1
                 break
-
         text_list.append(' '.join(text[idx_prev: idx + idx_prev]))
         idx_prev += idx
     return text_list
@@ -65,12 +61,11 @@ def make_chaos(text_chunk, f_percent):
     len_chunk = len(text_chunk)
     if len_chunk < 4:
         f_percent = 1 + (len_chunk - 1) * (-0.13)
-
-    # modify chunk
+    # modify chunk with len == 0
     if len_chunk is 0:
         len_chunk += 1
         text_chunk += " "
-
+    # set number of letters to modify
     n_chaos_letters = np.random.randint(0, math.ceil(len_chunk * f_percent))
     # random number of letters that we change
     pos_letters = [0] * (len_chunk - n_chaos_letters) + [1] * n_chaos_letters
@@ -78,7 +73,7 @@ def make_chaos(text_chunk, f_percent):
     # random number (0 to 3) of extra letters in random place
     cyrillic = ''.join([random_printable_unicode() for _ in range(40)])
     replace = ''.join(random.choices(cyrillic + string.ascii_uppercase + string.digits, k=len_chunk))
-
+    # append chunks
     new_text_chunk = ''
     for i, pos in enumerate(pos_random_letters):
         new_text_chunk += text_chunk[i] if pos is 0 else replace[i]
@@ -89,5 +84,10 @@ def find_max_chunk(chunk_list, pad_img, unicode_font):
     max_chunk = max(chunk_list, key=len)
     draw = ImageDraw.Draw(Image.new("RGB", (1, 1)))
     w, h = draw.textsize(max_chunk, font=unicode_font)
-    return w + pad_img[0], h + pad_img[1]
-
+    # add padding
+    w += pad_img[0]
+    h += pad_img[1]
+    # make size divisible in block of 16 pixels
+    h = h - h % 16
+    w = w - w % 16
+    return w, h
