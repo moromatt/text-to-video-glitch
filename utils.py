@@ -92,3 +92,10 @@ def find_max_chunk(chunk_list, pad_img, unicode_font):
     w = w - w % 16
     return w, h
 
+
+def add_space_btw_chunks(text_list):
+    ext_text_list = list()
+    for word in text_list:
+        ext_text_list.append(np.random.randint(5, 20) * " ")
+        ext_text_list.append(word)
+    return ext_text_list

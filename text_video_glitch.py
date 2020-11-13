@@ -4,9 +4,10 @@ __author__ = "amxrfe"
 __copyright__ = "Copyright 2020, Planet Earth"
 
 
+from tqdm import tqdm
 import imageio
 import argparse
-from PIL import ImageFont
+from PIL  import ImageFont
 from utils import *
 
 
@@ -47,27 +48,29 @@ if __name__ == '__main__':
     # set number of frames per chunk, add at the end C frames with the correct chunk
     n_frames_per_chunk = 40
     n_frames_per_chunk_chaos = 10  # must be < n_frames_per_chunk
-    n_frames_per_correct_chunk = 10  # add N extra correct frames
+    n_frames_per_correct_chunk = 20  # add N extra correct frames
     n_empty_chunk = 5
 
     # set font type and size
     unicode_font = ImageFont.truetype("simsun.ttc", text_size, encoding='unic')
 
     # fps image
-    fps = 30.0  # float(n_frames_per_chunk + n_frames_per_correct_chunk + n_empty_chunk)
+    fps = 30.0
 
     # get text and sanitize
     text = get_text(text_path)
 
     # split in random chunks
     text_list = create_chunks(text, word_range)
+    # extend text list
+    text_list = add_space_btw_chunks(text_list)
 
     # get larger chunk to print and calculate necessary min img dimension
     image_size = find_max_chunk(text_list, pad_img, unicode_font)
 
     list_of_images = list()
-    for idx, chunk in enumerate(text_list):
-        print(chunk)
+    for chunk in tqdm(text_list):
+        # print(chunk)
         # get N random chunks
         chaos_chunk_order = list()
         chaos_chunk = list()
