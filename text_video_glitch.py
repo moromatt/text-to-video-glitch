@@ -3,6 +3,7 @@
 __author__ = "amxrfe"
 __copyright__ = "Copyright 2020, Planet Earth"
 
+
 import imageio
 import argparse
 from PIL import ImageFont
@@ -21,7 +22,7 @@ if __name__ == '__main__':
                         help='max number of words per chunk')
     parser.add_argument('--f_percent', type=float, default=0.3,
                         help='set the percentage of how many letters should vary')
-    parser.add_argument('--text_size', type=int, default=2,
+    parser.add_argument('--text_size', type=int, default=40,
                         help='set the percentage of how many letters should vary')
 
     args = parser.parse_args()
@@ -44,7 +45,7 @@ if __name__ == '__main__':
     # background color
     background_color = (0, 0, 0)
     # set number of frames per chunk, add at the end C frames with the correct chunk
-    n_frames_per_chunk = 20
+    n_frames_per_chunk = 40
     n_frames_per_chunk_chaos = 10  # must be < n_frames_per_chunk
     n_frames_per_correct_chunk = 10  # add N extra correct frames
     n_empty_chunk = 5
@@ -53,7 +54,7 @@ if __name__ == '__main__':
     unicode_font = ImageFont.truetype("simsun.ttc", text_size, encoding='unic')
 
     # fps image
-    fps = float(n_frames_per_chunk + n_frames_per_correct_chunk + n_empty_chunk)
+    fps = 30.0  # float(n_frames_per_chunk + n_frames_per_correct_chunk + n_empty_chunk)
 
     # get text and sanitize
     text = get_text(text_path)
@@ -86,8 +87,7 @@ if __name__ == '__main__':
             w, h = draw.textsize(word, font=unicode_font)
             draw.text(((image_size[0] - w) / 2, (image_size[1] - h) / 2), word, font=unicode_font, fill=text_color)
             img = np.array(img_pil)
-
-            # display results
+            # append image
             list_of_images.append(img)
 
     imageio.mimwrite(path_img + '/' + video_name, np.array(list_of_images), fps=fps)

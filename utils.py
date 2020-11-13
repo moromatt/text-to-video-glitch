@@ -91,3 +91,4 @@ def find_max_chunk(chunk_list, pad_img, unicode_font):
     h = h - h % 16
     w = w - w % 16
     return w, h
+
