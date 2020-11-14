@@ -17,9 +17,9 @@ if __name__ == '__main__':
                         help='path/to/text.txt')
     parser.add_argument('--out_name', type=str, default='text_to_chaos_video.mp4',
                         help='video name output')
-    parser.add_argument('--min_word_range', type=int, default=10,
+    parser.add_argument('--min_word_range', type=int, default=3,
                         help='max number of words per chunk')
-    parser.add_argument('--max_word_range', type=int, default=20,
+    parser.add_argument('--max_word_range', type=int, default=7,
                         help='max number of words per chunk')
     parser.add_argument('--f_percent', type=float, default=0.3,
                         help='set the percentage of how many letters should vary')
@@ -46,16 +46,15 @@ if __name__ == '__main__':
     # background color
     background_color = (0, 0, 0)
     # set number of frames per chunk, add at the end C frames with the correct chunk
-    n_frames_per_chunk = 40
-    n_frames_per_chunk_chaos = 10  # must be < n_frames_per_chunk
-    n_frames_per_correct_chunk = 20  # add N extra correct frames
-    n_empty_chunk = 5
+    n_frames_per_chunk_chaos = 30  # number of corrupted frames per chunk
+    n_frames_per_correct_chunk = 60  # number of correct frames per chunk
+    n_empty_chunk = 1
 
     # set font type and size
     unicode_font = ImageFont.truetype("simsun.ttc", text_size, encoding='unic')
 
     # fps image
-    fps = 30.0
+    fps = 60.0
 
     # get text and sanitize
     text = get_text(text_path)

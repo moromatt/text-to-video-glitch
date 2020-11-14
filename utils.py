@@ -48,7 +48,7 @@ def create_chunks(text, word_range):
         idx = np.random.randint(*word_range)
         # if between the two indexes we found a \n, split and update idx
         for pos, word in enumerate(text[idx_prev: idx + idx_prev]):
-            if word.find('\n') != -1 or word.find(',') != -1:
+            if word.find('\n') != -1:  # or word.find(',') != -1:
                 idx = pos + 1
                 break
         text_list.append(' '.join(text[idx_prev: idx + idx_prev]))
