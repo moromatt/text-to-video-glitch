@@ -1,5 +1,5 @@
 # text_to_video_glitch:
-Generate from a txt file a glitched video where chunks of randomic size from the txt are displayed for N frames.  
+Generate a glitched video from a txt file, chunks of randomic sizes are taken from the txt and then displayed for N frames.  
 K of N frames will be created with "glitched" characters.  
 Set: number of glitched frames, number of maximum words per chunk, number of stable frames, background color, text color, image size, font.  
   
