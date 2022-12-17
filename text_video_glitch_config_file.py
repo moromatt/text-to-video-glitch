@@ -22,7 +22,6 @@ text_color = (255, 255, 255)
 # background color
 background_color = (0, 0, 0)
 
-
 # video sets
 # fps image
 fps = 100.0
