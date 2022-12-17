@@ -7,11 +7,10 @@ import numpy as np
 from PIL import ImageDraw, Image
 from confusables.confusables import Confusables
 
-path_img = "./video_out/"
-pathlib.Path(path_img).mkdir(parents=True, exist_ok=True)
-confusables = Confusables('./confusables/confusables.txt')
+
 
 def get_similar_char(string):
+    confusables = Confusables('./confusables/confusables.txt')
     cpattern = confusables.confusables_regex(string)
     return cpattern.replace("[","").replace("]","").split("\\")
 

@@ -5,7 +5,6 @@ __copyright__ = "Copyright 2020, Planet Earth"
 
 
 import imageio
-import argparse
 import datetime
 from tqdm import tqdm
 from PIL import ImageFont
@@ -14,6 +13,9 @@ from utils import *
 from text_video_glitch_config_file import *
 
 if __name__ == '__main__':
+    # create video output folder
+    path_img = "./video_out/"
+    pathlib.Path(path_img).mkdir(parents=True, exist_ok=True)
     # set text config
     word_range = sorted([min_word_range, max_word_range])
     # set font type and size
