@@ -8,7 +8,6 @@ from PIL import ImageDraw, Image
 from confusables.confusables import Confusables
 
 
-
 def get_similar_char(string):
     confusables = Confusables('./confusables/confusables.txt')
     cpattern = confusables.confusables_regex(string)
