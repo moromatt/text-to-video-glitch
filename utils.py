@@ -1,29 +1,42 @@
+import re
 import math
 import random
 import string
 import pathlib
 import numpy as np
 from PIL import ImageDraw, Image
-
+from confusables.confusables import Confusables
 
 path_img = "./video_out/"
 pathlib.Path(path_img).mkdir(parents=True, exist_ok=True)
+confusables = Confusables('./confusables/confusables.txt')
+
+def get_similar_char(string):
+    cpattern = confusables.confusables_regex(string)
+    return cpattern.replace("[","").replace("]","").split("\\")
 
 
+# https://stackoverflow.com/questions/73426687/change-ascii-text-font-to-unicode-font-in-python
 def random_printable_unicode():
+    def very_random_chars():
+        out = np.random.choice(np.random.randint(1,65533))
+        return out
+
     def random_chars():
-        cyrillic_range = (int('0410', 16), int('0450', 16))  # from the Cyrillic alphabet
-        jappo_range = (int('3040', 16), int('309F', 16))  # from the Cyrillic alphabet
-        greek_range = (int('0370', 16), int('03FF', 16))  # from the Cyrillic alphabet
+        cyrillic_range = (int('0410', 16), int('0450', 16))  
+        jappo_range = (int('3040', 16), int('309F', 16)) 
+        greek_range = (int('0370', 16), int('03FF', 16)) 
         arr1 = np.random.randint(*cyrillic_range)
         arr2 = np.random.randint(*jappo_range)
         arr3 = np.random.randint(*greek_range)
+        out = np.stack((arr1, arr2, arr3))
         out = np.stack((arr1, arr2, arr3))
         out = np.random.choice(out)
         return out
 
     while True:
-        i = random_chars()
+        # i = random_chars()
+        i = very_random_chars()
         c = chr(i)
         if c.isprintable():
             return c
@@ -48,7 +61,7 @@ def create_chunks(text, word_range):
         idx = np.random.randint(*word_range)
         # if between the two indexes we found a \n, split and update idx
         for pos, word in enumerate(text[idx_prev: idx + idx_prev]):
-            if word.find('\n') != -1:  # or word.find(',') != -1:
+            if word.find('\n') != -1 or False:  # or word.find(',') != -1:
                 idx = pos + 1
                 break
         text_list.append(' '.join(text[idx_prev: idx + idx_prev]))
@@ -70,15 +83,25 @@ def make_chaos(text_chunk, f_percent):
     # random number of letters that we change
     pos_letters = [0] * (len_chunk - n_chaos_letters) + [1] * n_chaos_letters
     pos_random_letters = random.sample(pos_letters, len(pos_letters))
+
     # random number (0 to 3) of extra letters in random place
-    cyrillic = ''.join([random_printable_unicode() for _ in range(40)])
-    replace = ''.join(random.choices(cyrillic + string.ascii_uppercase + string.digits, k=len_chunk))
+    random_chars = ''.join([random_printable_unicode() for _ in range(40)])
+    replace = ''.join(random.choices(random_chars + string.ascii_uppercase + string.digits, k=len_chunk))
     # append chunks
     new_text_chunk = ''
     for i, pos in enumerate(pos_random_letters):
         new_text_chunk += text_chunk[i] if pos is 0 else replace[i]
+
+    ## alternative if similar chars will ever works
+    # new_text_chunk = ''
+    # for letter in text_chunk:
+    #     similar_chars = get_similar_char(letter)
+    #     similar_char = random.choices(similar_chars, k=1)[0]
+    #     new_text_chunk += similar_char
     return new_text_chunk
 
+
+        
 
 def find_max_chunk(text_list, pad_img, unicode_font):
     max_chunk = max(text_list, key=len)
@@ -96,7 +119,7 @@ def find_max_chunk(text_list, pad_img, unicode_font):
 def add_space_btw_chunks(text_list):
     ext_text_list = list()
     for word in text_list:
-        ext_text_list.append(np.random.randint(10,  len(max(text_list, key=len))) * " ")
+        ext_text_list.append(np.random.randint(0,  len(max(text_list, key=len))) * " ")
         ext_text_list.append(word)
     return ext_text_list
 

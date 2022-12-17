@@ -1,0 +1,3 @@
+
+
+crea bat per lancio (ok solo per shell inizializzate, quindi solo mio)

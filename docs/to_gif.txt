@@ -1,0 +1,1 @@
+ffmpeg -i text_to_chaos_video.mp4 output.gif
