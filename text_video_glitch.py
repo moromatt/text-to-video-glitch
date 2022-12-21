@@ -51,12 +51,12 @@ if __name__ == '__main__':
             if (np.random.randint(1,100) > 25) and (index > 0): 
                 if not np.array_equal(img, img_old):
                     img = np.abs(img * img_old)
-            img_old = img
+            # img_old = img
             # append image
             if (np.random.randint(1,100) > 70):
                 img = create_blur(img)
             list_of_images.append(img)
-
+            img_old = img
 
     # save file adding timestamp to video output name
     timestamp = str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
