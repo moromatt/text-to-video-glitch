@@ -1,5 +1,6 @@
 # path configs
 text_path = './source_text/text.txt'
+video_output_path = "./video_out/"
 video_name = 'text_to_chaos_video.mp4'
 
 # glitch sets
@@ -24,12 +25,12 @@ background_color = (0, 0, 0)
 
 # video sets
 # fps image
-fps = 100.0
+fps = 50.0
 # set number of frames per chunk, add at the end C frames with the correct chunk
 # number of corrupted frames per chunk
-n_frames_per_chunk_chaos = 50
+n_frames_per_chunk_chaos = 25
 # number of correct frames per chunk
-n_frames_per_correct_chunk = 50
+n_frames_per_correct_chunk = 25
 # empty chunk between chunks
 n_empty_chunk = 1
 

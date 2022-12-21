@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """text_video_glitch.py."""
 __author__ = "amxrfe"
-__copyright__ = "Copyright 2020, Planet Earth"
+__copyright__ = "Copyright 2022, Planet Earth"
 
 
 import imageio
@@ -14,8 +14,7 @@ from text_video_glitch_config_file import *
 
 if __name__ == '__main__':
     # create video output folder
-    path_img = "./video_out/"
-    pathlib.Path(path_img).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(video_output_path).mkdir(parents=True, exist_ok=True)
     # set text config
     word_range = sorted([min_word_range, max_word_range])
     # set font type and size
@@ -47,14 +46,18 @@ if __name__ == '__main__':
             img_pil = Image.new("RGBA", image_size, color=background_color)
             draw = ImageDraw.Draw(img_pil)
             w, h = draw.textsize(word, font=unicode_font)
-            draw.text(((image_size[0] - w) / 2, (image_size[1] - h) / 2), word, font=unicode_font, fill=text_color)
+            draw.text(((image_size[0] - w) / 2, (image_size[1] - h) / 2), word, font=unicode_font, fill=text_color)       
             img = np.array(img_pil)
-            if (np.random.randint(1,100) > 65) and (index > 1): 
+            if (np.random.randint(1,100) > 25) and (index > 0): 
                 if not np.array_equal(img, img_old):
-                    img = img - img_old
-            if index > 0: img_old = img
+                    img = np.abs(img * img_old)
+            img_old = img
             # append image
+            if (np.random.randint(1,100) > 70):
+                img = create_blur(img)
             list_of_images.append(img)
 
+
+    # save file adding timestamp to video output name
     timestamp = str(datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
-    imageio.mimwrite(path_img + '/' + timestamp + "_" + video_name, np.array(list_of_images), fps=fps)
+    imageio.mimwrite(video_output_path + '/' + timestamp + "_" + video_name, np.array(list_of_images), fps=fps)

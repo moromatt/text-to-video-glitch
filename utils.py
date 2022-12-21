@@ -1,4 +1,5 @@
 import re
+import cv2
 import math
 import random
 import string
@@ -55,9 +56,9 @@ def create_chunks(text, word_range):
     idx_prev = 0
     text_list = list()
     while idx_prev <= len(text):
-        # get a random step between 1 and set word_range
+        # get vertical_motion random step between 1 and set word_range
         idx = np.random.randint(*word_range)
-        # if between the two indexes we found a \n, split and update idx
+        # if between the two indexes we found vertical_motion \n, split and update idx
         for pos, word in enumerate(text[idx_prev: idx + idx_prev]):
             if word.find('\n') != -1 or False:  # or word.find(',') != -1:
                 idx = pos + 1
@@ -99,8 +100,6 @@ def make_chaos(text_chunk, f_percent):
     return new_text_chunk
 
 
-        
-
 def find_max_chunk(text_list, pad_img, unicode_font):
     max_chunk = max(text_list, key=len)
     draw = ImageDraw.Draw(Image.new("RGB", (1, 1)))
@@ -122,3 +121,55 @@ def add_space_btw_chunks(text_list):
     return ext_text_list
 
 
+def create_blur_(f):
+    """
+    in: img 4 dimensions
+    in function: 2 dimensions
+    out: same
+    """
+    # Suppress/hide the warning
+    np.seterr(invalid='ignore')
+    f = f[:,:,0]
+    f = f/f.max() # normalize
+
+    # F(u,v), image in frequency domain
+    F = np.fft.fft2(f)
+
+    # H(u,v), motion blur function in frequency domain
+    # Create matrix H (motion blur function H(u,v))
+    M,N = F.shape 
+    H = np.zeros((M+1,N+1), dtype=np.complex128) # +1 to avoid zero division
+
+    # Motion blur parameters
+    exposure_duration = 0.5     # duration of exposure
+    vertical_motion = 0         # vertical motion
+    horizontal_motion = 0.05    # horizontal motion
+
+    # Fill matrix H
+    for u in range(1,M+1):
+        for v in range(1,N+1):
+            s = np.pi*(u*vertical_motion + v*horizontal_motion)
+            H[u,v] = (exposure_duration/s) * np.sin(s) * np.exp(-1j*s)
+
+    # index slicing
+    H = H[1:,1:]     
+    
+    # G(u,v), blurred image in frequency domain
+    G = H * F
+
+    # g(x,y), blurred image in spatial domain
+    g = np.fft.ifft2(G)
+    g = np.abs(g)
+    return np.repeat(g[:, :, np.newaxis], 4, axis=2)
+
+def create_blur(img, size=30):
+
+    # generating the kernel
+    kernel_motion_blur = np.zeros((size, size))
+    kernel_motion_blur[int((size-1)/2), :] = np.ones(size)
+    kernel_motion_blur = kernel_motion_blur / size
+
+    # applying the kernel to the input image
+    output = cv2.filter2D(img, -1, kernel_motion_blur)
+    output = np.uint8(output / 2)
+    return np.asarray(output)
