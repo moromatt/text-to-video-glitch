@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""text_video_glitch.py."""
+"""video_glitch.py."""
 __author__ = "amxrfe"
 __copyright__ = "Copyright 2022, Planet Earth"
 
