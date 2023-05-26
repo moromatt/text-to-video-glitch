@@ -9,5 +9,4 @@ And the sense that something was dying inside him<br />
 The first headline of the worst kept liar read:<br />
 "You my friend have many lessons to learn"<br />
 
-![Alt Text](https://github.com/moromatt/text-to-video-glitch/blob/main/video_out/test.gif)
-
+![](https://github.com/moromatt/text-to-video-glitch/blob/main/video_out/test.gif)
